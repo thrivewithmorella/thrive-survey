@@ -1,7 +1,7 @@
 CIRCLE_NAME = "Active Circle"
 
 BRAND_COLOR = "#DF577B"
-LOGO_FILE = "assets/logo.png"
+LOGO_FILE = "assets/Banner.png"
 
 # Each question is a dict:
 #   "q"      = the main question (required)
