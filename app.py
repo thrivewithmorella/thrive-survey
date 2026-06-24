@@ -1,38 +1,83 @@
 
 import streamlit as st
 import importlib
+import os
 from sheets import save_response
 
 # ------------------------------------------------------------
-# Which circle's config to load is set by Streamlit secrets.
-# Locally it defaults to "active". On deploy, each app sets its own.
+# Load this app's circle config from Streamlit secrets.
 # ------------------------------------------------------------
 circle_key = st.secrets.get("CIRCLE", "active")
 cfg = importlib.import_module(f"config_{circle_key}")
 WEBAPP_URL = st.secrets["WEBAPP_URL"]
 
-# --- Page setup & branding ---
-st.set_page_config(page_title=cfg.CIRCLE_NAME, page_icon="📝")
-
-# Apply brand color to buttons via a little CSS
-st.markdown(
-    f"<style>div.stButton > button {{ background-color: {cfg.BRAND_COLOR}; color: white; border: none; }}</style>",
-    unsafe_allow_html=True,
-)
+st.set_page_config(page_title=cfg.CIRCLE_NAME, page_icon="🌸")
 
 # ------------------------------------------------------------
-# SESSION STATE: this is how Streamlit remembers progress
-# across reruns. We set up our memory the first time only.
+# BRAND STYLING
+# Palette: Ivory #FAF7F2 / Charcoal #2E2A2B / Watermelon #DF577B / Stone #D8D1C8
+# Fonts:  Fraunces (headings) + Nunito Sans (body)
+# ------------------------------------------------------------
+st.markdown('''
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Nunito+Sans:wght@400;600;700&display=swap');
+
+/* Page background + body font */
+.stApp { background-color: #FAF7F2; }
+html, body, [class*="css"] { font-family: 'Nunito Sans', sans-serif; color: #2E2A2B; }
+
+/* Headings in Fraunces */
+h1, h2, h3 { font-family: 'Fraunces', serif !important; color: #2E2A2B !important; font-weight: 500; }
+
+/* Center the logo */
+div[data-testid="stImage"] { display: flex; justify-content: center; }
+div[data-testid="stImage"] img { margin: 0 auto; }
+
+/* Rounded answer box */
+.stTextArea textarea, .stTextInput input {
+    border-radius: 12px !important;
+    border: 1px solid #D8D1C8 !important;
+    background-color: #FFFFFF !important;
+    padding: 12px !important;
+    font-family: 'Nunito Sans', sans-serif !important;
+    color: #2E2A2B !important;
+}
+.stTextArea textarea:focus, .stTextInput input:focus {
+    border-color: #DF577B !important;
+    box-shadow: 0 0 0 2px rgba(223,87,123,0.18) !important;
+}
+
+/* Accent buttons */
+div.stButton > button {
+    background-color: #DF577B;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 12px;
+    padding: 0.55rem 1.4rem;
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 700;
+    transition: background-color 0.15s ease;
+}
+div.stButton > button:hover { background-color: #C8456A; color: #FFFFFF; }
+div.stButton > button:active { transform: scale(0.98); }
+
+/* Hide Streamlit's default chrome for a cleaner, less-"Streamlit" look */
+#MainMenu { visibility: hidden; }
+footer { visibility: hidden; }
+header { visibility: hidden; }
+</style>
+''', unsafe_allow_html=True)
+
+# ------------------------------------------------------------
+# SESSION STATE
 # ------------------------------------------------------------
 if "page" not in st.session_state:
-    st.session_state.page = 0            # 0 = welcome, then 1..N = questions
+    st.session_state.page = 0
     st.session_state.answers = [""] * len(cfg.QUESTIONS)
-    st.session_state.submitted = False
 
-# Show the logo if it exists
-import os
+# Logo (skipped gracefully if missing)
 if os.path.exists(cfg.LOGO_FILE):
-    st.image(cfg.LOGO_FILE, width=180)
+    st.image(cfg.LOGO_FILE, width=200)
 
 total_pages = len(cfg.QUESTIONS)
 
@@ -47,20 +92,19 @@ if st.session_state.page == 0:
         st.rerun()
 
 # ------------------------------------------------------------
-# PAGES 1..N: one question each
+# PAGES 1..N: one question each (no counter heading)
 # ------------------------------------------------------------
 elif 1 <= st.session_state.page <= total_pages:
-    i = st.session_state.page - 1   # index into the questions list
-    st.subheader(f"Question {st.session_state.page} of {total_pages}")
+    i = st.session_state.page - 1
     st.write(cfg.QUESTIONS[i])
 
-    # The text box. Its value is tied to session_state so it persists.
     st.session_state.answers[i] = st.text_area(
         "Your answer",
         value=st.session_state.answers[i],
         max_chars=3000,
         height=200,
         key=f"q{i}",
+        label_visibility="collapsed",
     )
 
     col1, col2 = st.columns(2)
@@ -75,7 +119,7 @@ elif 1 <= st.session_state.page <= total_pages:
             st.rerun()
 
 # ------------------------------------------------------------
-# CONTACT PAGE (after the last question)
+# CONTACT PAGE
 # ------------------------------------------------------------
 elif st.session_state.page == total_pages + 1:
     st.subheader("Almost done")
@@ -93,10 +137,8 @@ elif st.session_state.page == total_pages + 1:
     with col2:
         if st.button("Submit"):
             ok = save_response(
-                WEBAPP_URL,
-                cfg.CIRCLE_NAME,
-                st.session_state.answers,
-                name, phone, email,
+                WEBAPP_URL, cfg.CIRCLE_NAME,
+                st.session_state.answers, name, phone, email,
             )
             if ok:
                 st.session_state.page = total_pages + 2
