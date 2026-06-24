@@ -1,12 +1,17 @@
-
 CIRCLE_NAME = "Emerging Circle"
 
-BRAND_COLOR = "#1A5276"
+BRAND_COLOR = "#DF577B"
 LOGO_FILE = "assets/logo.png"
 
 QUESTIONS = [
-    "What is your biggest challenge in your life right now? Please be as detailed and specific as possible. The more specific and detailed you are, the more likely I'll be able to support you.",
-    "What would meaningful support look like for you?",
+    {
+        "q": "What is your biggest challenge in your life right now?",
+        "helper": "Please be as detailed and specific as possible. The more specific and detailed you are, the more likely I'll be able to support you.",
+    },
+    {
+        "q": "What would meaningful support look like for you?",
+        "helper": "",
+    },
 ]
 
 WELCOME_TITLE = "Thrive with Morella"
