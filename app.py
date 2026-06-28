@@ -40,7 +40,15 @@ if 1 <= st.session_state.page <= total_pages:
     if question.get("helper"):
         st.markdown(f'<p class="q-help">{question["helper"]}</p>', unsafe_allow_html=True)
 
-    st.session_state.answers[i] = st.text_area(...)
+    st.session_state.answers[i] = st.text_area(
+        "Your answer",
+        value=st.session_state.answers[i],
+        max_chars=3000,
+        height=200,
+        key=f"q{i}",
+        label_visibility="collapsed",
+        placeholder="Type your answer here...",
+    )
 
     if st.session_state.page > 1:
         c1, c2, c3 = st.columns([1, 1, 4])
