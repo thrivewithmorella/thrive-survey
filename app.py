@@ -2,10 +2,13 @@ import streamlit as st
 import importlib
 import os
 from sheets import save_response
+import os
+   os.environ["WEBAPP_URL"] = "https://script.google.com/macros/s/AKfycbw-RgZsvwhHkrzeV2DUWmGeE5VOCL2jPoC9jPSNgYkCCU_0kczBaly2KWCqClR-1pMK/exec
+"
 
 circle_key = st.secrets.get("CIRCLE", "active")
 cfg = importlib.import_module(f"config_{circle_key}")
-WEBAPP_URL = st.secrets["WEBAPP_URL"]
+WEBAPP_URL = os.environ["WEBAPP_URL"]
 
 st.set_page_config(page_title=cfg.CIRCLE_NAME, page_icon="\U0001F338")
 
