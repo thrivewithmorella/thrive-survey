@@ -114,7 +114,9 @@ elif st.session_state.page == total_pages + 1:
     st.markdown('<p style="margin-bottom:0.2rem;">Phone</p>', unsafe_allow_html=True)
     pcol1, pcol2 = st.columns([2, 3])
     with pcol1:
-        country = st.selectbox("Country code", COUNTRY_CODES, label_visibility="collapsed", index=0)
+        if "country_code" not in st.session_state:
+            st.session_state.country_code = COUNTRY_CODES[0]
+        country = st.selectbox("Country code", COUNTRY_CODES, key="country_code")
     with pcol2:
         phone_number = st.text_input(
             "Phone number",
