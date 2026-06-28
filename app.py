@@ -89,7 +89,7 @@ COUNTRY_CODES = [
 # SESSION STATE
 # ------------------------------------------------------------
 if "page" not in st.session_state:
-    st.session_state.page = 0
+    st.session_state.page = 1
     st.session_state.answers = [""] * len(cfg.QUESTIONS)
 
 # Banner (skipped gracefully if missing)
@@ -97,16 +97,6 @@ if os.path.exists(cfg.LOGO_FILE):
     st.image(cfg.LOGO_FILE, use_container_width=True)
 
 total_pages = len(cfg.QUESTIONS)
-
-# ------------------------------------------------------------
-# PAGE 0: Welcome
-# ------------------------------------------------------------
-if st.session_state.page == 0:
-    st.title(cfg.WELCOME_TITLE)
-    st.write(cfg.WELCOME_TEXT)
-    if st.button("Start"):
-        st.session_state.page = 1
-        st.rerun()
 
 # ------------------------------------------------------------
 # PAGES 1..N: one question each (numbered, with optional helper)
