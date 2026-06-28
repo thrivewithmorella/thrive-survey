@@ -5,8 +5,8 @@ LOGO_FILE = "assets/Banner.png"
 
 QUESTIONS = [
     {
-        "q": "What is your biggest challenge in your life right now?",
-        "helper": "Please be as detailed and specific as possible. The more specific and detailed you are, the more likely I'll be able to support you.",
+        "q": "What is your biggest challenge in life right now?",
+        "helper": "Please be as detailed as possible. The more specific and detailed you are, the more likely I'll be able to support you.",
     },
 ]
 
