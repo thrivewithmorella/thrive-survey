@@ -14,15 +14,29 @@ st.markdown('''
 ...
 /* Watermelon buttons */
 div.stButton > button {
-    background-color: #DF577B;
-    color: #FFFFFF;
-    ...
+    background-color: #DF577B !important;
+    color: #FFFFFF !important;
+    border: none;
+    border-radius: 12px;
+    padding: 0.55rem 1.4rem;
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 700;
+    transition: background-color 0.15s ease;
+    width: 100%;
+}
+div.stButton > button:hover {
+    background-color: #C8456A !important;
+    color: #FFFFFF !important;
+}
+div.stButton > button:active {
+    transform: scale(0.98);
 }
 ...
 /* Question number in watermelon */
 .q-num {
-    color: #DF577B;
-    ...
+    color: #DF577B !important;
+    font-weight: 600;
+    margin-right: 0.4rem;
 }
 ...
 </style>
