@@ -12,6 +12,19 @@ st.set_page_config(page_title=cfg.CIRCLE_NAME, page_icon="\U0001F338")
 st.markdown('''
 <style>
 ...
+/* Watermelon buttons */
+div.stButton > button {
+    background-color: #DF577B;
+    color: #FFFFFF;
+    ...
+}
+...
+/* Question number in watermelon */
+.q-num {
+    color: #DF577B;
+    ...
+}
+...
 </style>
 ''', unsafe_allow_html=True)
 
@@ -71,10 +84,49 @@ if 1 <= st.session_state.page <= total_pages:
 # CONTACT PAGE
 # ------------------------------------------------------------
 elif st.session_state.page == total_pages + 1:
-    ...
+    st.subheader("Almost done")
+    st.write(cfg.CONTACT_INTRO)
+
+    name = st.text_input("Name", key="name", placeholder="Your name")
+
+    st.markdown('<p style="margin-bottom:0.2rem;">Phone</p>', unsafe_allow_html=True)
+    pcol1, pcol2 = st.columns([2, 3])
+    with pcol1:
+        country = st.selectbox("Country code", COUNTRY_CODES, label_visibility="collapsed")
+    with pcol2:
+        phone_number = st.text_input(
+            "Phone number",
+            key="phone_num",
+            label_visibility="collapsed",
+            placeholder="Phone number",
+        )
+    dial = country.split(" ")[0] if country != "Other" else ""
+    phone = f"{dial} {phone_number}".strip()
+
+    email = st.text_input("Email", key="email", placeholder="you@example.com")
+
+    c1, c2, c3 = st.columns([1, 1, 4])
+    with c1:
+        if st.button("Back"):
+            st.session_state.page -= 1
+            st.rerun()
+    with c2:
+        if st.button("Submit"):
+            ok = save_response(
+                WEBAPP_URL, cfg.CIRCLE_NAME,
+                st.session_state.answers, name, phone, email,
+            )
+            if ok:
+                st.session_state.page = total_pages + 2
+                st.rerun()
+            else:
+                st.error("Something went wrong sending your response. Please try again.")
 
 # ------------------------------------------------------------
 # THANK YOU PAGE
 # ------------------------------------------------------------
 else:
-    ...
+    st.title(cfg.THANKYOU_TITLE)
+    st.write(cfg.THANKYOU_TEXT)
+    st.markdown(f"[Visit our website]({cfg.WEBSITE_URL})")
+    st.markdown(f"[Follow us]({cfg.SOCIAL_URL})")
