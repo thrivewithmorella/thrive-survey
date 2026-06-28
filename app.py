@@ -2,9 +2,8 @@ import streamlit as st
 import importlib
 import os
 from sheets import save_response
-import os
-   os.environ["WEBAPP_URL"] = "https://script.google.com/macros/s/AKfycbw-RgZsvwhHkrzeV2DUWmGeE5VOCL2jPoC9jPSNgYkCCU_0kczBaly2KWCqClR-1pMK/exec
-"
+
+os.environ["WEBAPP_URL"] = "https://script.google.com/macros/s/AKfycbw-RgZsvwhHkrzeV2DUWmGeE5VOCL2jPoC9jPSNgYkCCU_0kczBaly2KWCqClR-1pMK/exec"
 
 circle_key = st.secrets.get("CIRCLE", "active")
 cfg = importlib.import_module(f"config_{circle_key}")
