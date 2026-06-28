@@ -50,12 +50,9 @@ div[data-testid="stHorizontalBlock"] button {
 </style>
 ''', unsafe_allow_html=True)
 
-COUNTRY_CODES = [...]
-
 if "page" not in st.session_state:
     st.session_state.page = 1
     st.session_state.answers = [""] * len(cfg.QUESTIONS)
-    st.session_state.country_code = COUNTRY_CODES[0]  # Initialize country_code
 
 if os.path.exists(cfg.LOGO_FILE):
     st.image(cfg.LOGO_FILE, use_container_width=True)
@@ -112,19 +109,7 @@ elif st.session_state.page == total_pages + 1:
 
     name = st.text_input("Name", key="name", placeholder="Your name")
 
-    st.markdown('<p style="margin-bottom:0.2rem;">Phone</p>', unsafe_allow_html=True)
-    pcol1, pcol2 = st.columns([2, 3])
-    with pcol1:
-        st.session_state.country_code = st.selectbox("Country code", COUNTRY_CODES, index=COUNTRY_CODES.index(st.session_state.country_code))
-    with pcol2:
-        phone_number = st.text_input(
-            "Phone number",
-            key="phone_num",
-            label_visibility="collapsed",
-            placeholder="Phone number",
-        )
-    dial = st.session_state.country_code.split(" ")[0] if st.session_state.country_code != "Other" else ""
-    phone = f"{dial} {phone_number}".strip()
+    phone = st.text_input("Phone", key="phone", placeholder="Your phone number")
 
     email = st.text_input("Email", key="email", placeholder="you@example.com")
 
