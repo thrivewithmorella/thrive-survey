@@ -12,10 +12,10 @@ st.set_page_config(page_title=cfg.CIRCLE_NAME, page_icon="\U0001F338")
 st.markdown('''
 <style>
 ...
-/* Watermelon buttons */
+/* Action buttons */
 div.stButton > button {
-    background-color: #DF577B !important;
-    color: #FFFFFF !important;
+    background-color: #DF577B;
+    color: #FFFFFF;
     border: none;
     border-radius: 12px;
     padding: 0.55rem 1.4rem;
@@ -25,16 +25,24 @@ div.stButton > button {
     width: 100%;
 }
 div.stButton > button:hover {
-    background-color: #C8456A !important;
-    color: #FFFFFF !important;
+    background-color: #C8456A;
+    color: #FFFFFF;
 }
 div.stButton > button:active {
     transform: scale(0.98);
 }
-...
-/* Question number in watermelon */
+
+/* Wider buttons and closer spacing */
+div[data-testid="stHorizontalBlock"] {
+    gap: 0.5rem;
+}
+div[data-testid="stHorizontalBlock"] button {
+    width: 100%;
+}
+
+/* Question number color */
 .q-num {
-    color: #DF577B !important;
+    color: #DF577B;
     font-weight: 600;
     margin-right: 0.4rem;
 }
